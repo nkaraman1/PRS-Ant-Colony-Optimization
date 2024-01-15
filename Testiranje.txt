@@ -1,0 +1,15 @@
+100 gradova 1000 mrava [ms]
+ORG: 	1438 	1454 	1432 	1337 	1336
+V2:	703	785	fail	703	705
+V3: 	949	fail	722	718	728
+
+100 gradova 2048 mrava [ms]
+ORG:	1548	1600	1548	1549	1549
+V2:	1271	1013	1015	1016	1017
+V3:	1214	fail	1020	1019	1011
+
+100 gradova 512 mrava [ms]
+ORG:	983	998	887	887	887
+V2:	855	685	696	fail	fail
+V3:	fail	fail	fail	fail	fail
+
