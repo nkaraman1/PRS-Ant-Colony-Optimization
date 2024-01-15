@@ -19,7 +19,7 @@ mravi.o: parallel_ants_v2.cu
 	$(NVCC) -c parallel_ants_v2.cu $(CFLAGS_GPU2) -o mravi.o
 
 mravi2: mravi2.o
-	$(NVCC) $(CFLAGS_GPU2) mravi.o -o mravi
+	$(NVCC) $(CFLAGS_GPU2) mravi2.o -o mravi2
 
 mravi2.o: parallel_ants_v3.cu
 	$(NVCC) -c parallel_ants_v3.cu $(CFLAGS_GPU2) -o mravi2.o
