@@ -1,3 +1,6 @@
 *.o
 *.exe
 *.pdb
+*.lib
+*.exp
+*.nvvp

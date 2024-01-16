@@ -4,13 +4,13 @@ CUDA_PATH = /usr/local/cuda
 CFLAGS_GPU = -L$(CUDA_PATH)/lib64 -lcudart -lcuda -lcurand -O3 -g -D_FORCE_INLINES -Xcompiler -I/C/common/inc
 CFLAGS_GPU2 = -L$(CUDA_PATH)/lib64 -lcudart -lcuda -lcurand -O3 -g -D_FORCE_INLINES -Xcompiler -I/C/common/inc -use_fast_math
 
-all: ant_gpu.o tsp-ant-gpu mravi.o mravi mravi2.o mravi2
+all: ant_gpu.o orig mravi.o mravi mravi2.o mravi2
 
-tsp-ant-gpu: ant_gpu.o
-	$(NVCC) $(CFLAGS_GPU) ant_gpu.o -o tsp-ant-gpu
+orig: ant_gpu.o
+	$(NVCC) $(CFLAGS_GPU) ant_gpu.o -o orig
 
-ant_gpu.o: parallel_ants.cu
-	$(NVCC) -c parallel_ants.cu $(CFLAGS_GPU) -o ant_gpu.o
+ant_gpu.o: parallel_ants_orig.cu
+	$(NVCC) -c parallel_ants_orig.cu $(CFLAGS_GPU) -o ant_gpu.o
 
 mravi: mravi.o
 	$(NVCC) $(CFLAGS_GPU2) mravi.o -o mravi
