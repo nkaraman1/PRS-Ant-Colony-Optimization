@@ -6,7 +6,7 @@
 
 //Problem Parameters
 constexpr unsigned int CITIES = 100;
-constexpr unsigned int ANTS = 3000;
+constexpr unsigned int ANTS = 1000;
 constexpr double MAX_DIST = 100;
 constexpr int ALPHA = 1;
 constexpr int BETA = 5; 		//This parameter raises the weight of distance over pheromone
@@ -339,6 +339,15 @@ __forceinline__ __device__ double antProduct(int from, int to, double *hormone_d
     return __fmul_rn(__powf(hormone_d[index], ALPHA), __powf((1.0f / distances_d[index]), BETA));
 }
 
+__forceinline__ __device__ int getFirstUnvisitedCity(struct ant *ants_d, int pos) {
+    for (int i = 0; i < CITIES; i++) {
+        if (ants_d[pos].visited[i] == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 __forceinline__ __device__ int NextCity(struct ant *ants_d, int pos, float *distances_d, double *hormone_d, curandState *state_d ){
 	int to, from;
 	double denom = 0.0;
@@ -348,33 +357,35 @@ __forceinline__ __device__ int NextCity(struct ant *ants_d, int pos, float *dist
 		if(ants_d[pos].visited[to] == 0) denom += antProduct(from, to, hormone_d, distances_d);
 	}
 
-	assert(denom != 0.0);
-
-	to++;
-	int count = CITIES - ants_d[pos].pathIndex;
-
-	do{
-		double p;
+	if (denom == 0.0) {
+        // Avoid division by zero, move to the first unvisited city
+        to = getFirstUnvisitedCity(ants_d, pos);
+	}else {
 		to++;
+		int count = CITIES - ants_d[pos].pathIndex;
 
-		if(to >= CITIES)
-			to = 0;
+		do{
+			double p;
+			to++;
 
-		if(ants_d[pos].visited[to] == 0){
-			p = __fdiv_rn(antProduct(from, to, hormone_d, distances_d), denom);
-      double rem = curand(&state_d[pos]) % 100000000;
-			double x = __fdiv_rn(rem, 100000000.0);
-			if(x < p){
-				break;
+			if(to >= CITIES)
+				to = 0;
+
+			if(ants_d[pos].visited[to] == 0){
+				p = __fdiv_rn(antProduct(from, to, hormone_d, distances_d), denom);
+		double rem = curand(&state_d[pos]) % 100000000;
+				double x = __fdiv_rn(rem, 100000000.0);
+				if(x < p){
+					break;
+				}
+				count--;
+				if(count == 0){
+					break;
+				}
 			}
-			count--;
-			if(count == 0){
-				break;
-			}
-		}
-	}while(1);
+		}while(1);
 
-	__syncthreads();
-
+		__syncthreads();
+	}
 	return to;
 }
