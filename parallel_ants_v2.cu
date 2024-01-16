@@ -5,7 +5,7 @@
 #include <curand_kernel.h>
 
 //Problem Parameters
-constexpr unsigned int CITIES = 420;
+constexpr unsigned int CITIES = 100;
 constexpr unsigned int ANTS = 1000;
 constexpr double MAX_DIST = 100;
 constexpr int ALPHA = 1;
@@ -20,7 +20,7 @@ static void HandleError( cudaError_t err,
 						 const char *file,
 						 int line) {
 	if(err != cudaSuccess) {
-		printf("%s in %s at line %d\n", cudaGetErrorString( err), file, line);
+		printf("%s in %s at line %d\n", cudaGetErrorString(err), file, line);
 		exit( EXIT_FAILURE );
 	}
 }
@@ -366,6 +366,6 @@ __forceinline__ __device__ int NextCity(struct ant *ants_d, int pos, float *dist
 
 		__syncthreads();
 
-		return to;
 	}
+	return to;
 }
