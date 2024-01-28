@@ -5,14 +5,14 @@
 #include <curand_kernel.h>
 
 //Problem Parameters
-constexpr unsigned int CITIES = 100;
-constexpr unsigned int ANTS = 1000;
-constexpr double MAX_DIST = 100;
-constexpr int ALPHA = 1;
+constexpr unsigned int CITIES = 2392;
+constexpr unsigned int ANTS = 1024;
+constexpr double MAX_DIST = 1000;
+constexpr double ALPHA = 0.4;
 constexpr int BETA = 5; 		//This parameter raises the weight of distance over pheromone
 constexpr double RHO = 0.5;	//Evapouration rate
 constexpr int QVAL = 100;
-constexpr unsigned int MAX_TOURS = 50;	// The number of times an ant will walk trough all the cities
+constexpr unsigned int MAX_TOURS = 20;	// The number of times an ant will walk trough all the cities
 constexpr double INIT_PHER = 1.0 / CITIES;	// Initial hormone for each path
 constexpr double MAX_TOTAL_DISTANCE = CITIES * MAX_DIST; // MAX possible distance that an ant can walk
 
@@ -52,7 +52,7 @@ float        *bestdistance_d;
 curandState  *state_d;
 const int THREADS = 256;
 const int BLOCKS = (ANTS + THREADS - 1) / THREADS;
-const char *FILENAME = "map100.txt";
+const char *FILENAME = "pr2392.txt";
 
 void get_distances_matrix();
 void get_distances_matrix_from_file(const char *filename);
